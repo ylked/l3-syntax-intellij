@@ -1,4 +1,4 @@
-package org.jetbrains.plugins.template
+package com.github.ylked.l3syntaxintellij
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls
