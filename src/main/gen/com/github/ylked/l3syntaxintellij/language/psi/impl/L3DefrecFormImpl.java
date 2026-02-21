@@ -1,0 +1,42 @@
+// This is a generated file. Not intended for manual editing.
+package com.github.ylked.l3syntaxintellij.language.psi.impl;
+
+import java.util.List;
+import org.jetbrains.annotations.*;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.util.PsiTreeUtil;
+import static com.github.ylked.l3syntaxintellij.language.psi.L3Types.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import com.github.ylked.l3syntaxintellij.language.psi.*;
+
+public class L3DefrecFormImpl extends ASTWrapperPsiElement implements L3DefrecForm {
+
+  public L3DefrecFormImpl(@NotNull ASTNode node) {
+    super(node);
+  }
+
+  public void accept(@NotNull L3Visitor visitor) {
+    visitor.visitDefrecForm(this);
+  }
+
+  @Override
+  public void accept(@NotNull PsiElementVisitor visitor) {
+    if (visitor instanceof L3Visitor) accept((L3Visitor)visitor);
+    else super.accept(visitor);
+  }
+
+  @Override
+  @NotNull
+  public L3FunForm getFunForm() {
+    return findNotNullChildByClass(L3FunForm.class);
+  }
+
+  @Override
+  @NotNull
+  public L3Identifier getIdentifier() {
+    return findNotNullChildByClass(L3Identifier.class);
+  }
+
+}

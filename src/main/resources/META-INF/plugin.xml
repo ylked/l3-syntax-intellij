@@ -1,7 +1,7 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.ylked.l3syntaxintellij</id>
-    <name>l3-syntax-intellij</name>
+    <name>EPFL L3 Syntax Highlighter</name>
     <vendor>ylked</vendor>
 
     <depends>com.intellij.modules.platform</depends>
@@ -9,7 +9,26 @@
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.ylked.l3syntaxintellij.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="com.github.ylked.l3syntaxintellij.startup.MyProjectActivity" />
+        <fileType
+                name="L3 File"
+                implementationClass="com.github.ylked.l3syntaxintellij.filetypes.L3FileType"
+                fieldName="INSTANCE"
+                language="L3"
+                extensions="l3"/>
+
+        <fileType
+                name="L3 Module File"
+                implementationClass="com.github.ylked.l3syntaxintellij.filetypes.L3ModuleFileType"
+                fieldName="INSTANCE"
+                language="L3"
+                extensions="l3m"/>
+
+        <lang.parserDefinition
+                language="L3"
+                implementationClass="com.github.ylked.l3syntaxintellij.language.L3ParserDefinition"/>
+
+        <lang.syntaxHighlighterFactory
+                language="L3"
+                implementationClass="com.github.ylked.l3syntaxintellij.highlighter.L3SyntaxHighlighterFactory"/>
     </extensions>
 </idea-plugin>

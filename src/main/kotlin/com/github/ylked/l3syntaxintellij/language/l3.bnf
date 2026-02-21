@@ -1,0 +1,102 @@
+{
+  parserClass="com.github.ylked.l3syntaxintellij.language.parser.L3Parser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="L3"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.github.ylked.l3syntaxintellij.language.psi"
+  psiImplPackage="com.github.ylked.l3syntaxintellij.language.psi.impl"
+
+  elementTypeHolderClass="com.github.ylked.l3syntaxintellij.language.psi.L3Types"
+  elementTypeClass="com.github.ylked.l3syntaxintellij.language.psi.L3ElementType"
+  tokenTypeClass="com.github.ylked.l3syntaxintellij.language.psi.L3TokenType"
+
+  tokens = [
+    LPAREN="("
+    RPAREN=")"
+
+    DEF="def"
+    DEFREC="defrec"
+    FUN="fun"
+    LET="let"
+    LETSTAR="let*"
+    LETREC="letrec"
+    REC="rec"
+    BEGIN="begin"
+    IF="if"
+    COND="cond"
+    AND="and"
+    OR="or"
+    NOT="not"
+
+    AT="@"
+    BOOL_TRUE="#t"
+    BOOL_FALSE="#f"
+    UNIT="#u"
+
+    COMMENT
+  ]
+}
+
+program ::= program_prefix expr
+
+program_prefix ::= program_prefix_item*
+program_prefix_item ::= def_form | defrec_form | expr
+
+def_form ::= LPAREN DEF identifier expr RPAREN
+defrec_form ::= LPAREN DEFREC identifier fun_form RPAREN
+
+expr ::= fun_form
+      | let_form
+      | let_star_form
+      | letrec_form
+      | rec_form
+      | begin_form
+      | if_form
+      | cond_form
+      | and_form
+      | or_form
+      | not_form
+      | app_form
+      | prim_form
+      | identifier
+      | NUMBER
+      | BLOCK_TAG
+      | STRING
+      | CHAR
+      | BOOL_TRUE
+      | BOOL_FALSE
+      | UNIT
+
+exprs ::= expr+
+
+identifier ::= IDENT
+prim_name_ref ::= PRIM_NAME
+
+fun_form ::= LPAREN FUN LPAREN identifier* RPAREN exprs RPAREN
+
+let_form ::= LPAREN LET LPAREN binding* RPAREN exprs RPAREN
+let_star_form ::= LPAREN LETSTAR LPAREN binding* RPAREN exprs RPAREN
+binding ::= LPAREN identifier expr RPAREN
+
+letrec_form ::= LPAREN LETREC LPAREN fun_binding* RPAREN exprs RPAREN
+fun_binding ::= LPAREN identifier fun_form RPAREN
+
+rec_form ::= LPAREN REC identifier LPAREN binding* RPAREN exprs RPAREN
+begin_form ::= LPAREN BEGIN exprs RPAREN
+
+if_form ::= LPAREN IF expr expr expr? RPAREN
+
+cond_form ::= LPAREN COND cond_clause+ RPAREN
+cond_clause ::= LPAREN expr exprs RPAREN
+
+and_form ::= LPAREN AND expr expr expr* RPAREN
+or_form ::= LPAREN OR expr expr expr* RPAREN
+not_form ::= LPAREN NOT expr RPAREN
+
+app_form ::= LPAREN expr expr* RPAREN
+
+prim_form ::= LPAREN AT prim_name_ref expr* RPAREN
+
+private force_comment_token ::= COMMENT
