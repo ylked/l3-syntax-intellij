@@ -11,6 +11,16 @@ or inconsistencies. Feel free to report the errors you may encounter.
 
 ## Installation
 
+### Using pre-built release
+
+Select the last release on the right pane of the GitHub repository home and
+download the ZIP file.
+
+In IntelliJ, go to Settings -> Plugins, then click on the gear icon and select "Install Plugin from Disk..." and
+choose the downloaded ZIP file.
+
+### Build from source
+
 Using Gradle, run the task `buildPlugin`
 
 ```shell
