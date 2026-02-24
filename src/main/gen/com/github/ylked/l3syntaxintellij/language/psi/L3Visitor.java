@@ -59,6 +59,10 @@ public class L3Visitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitIdname(@NotNull L3Idname o) {
+    visitPsiElement(o);
+  }
+
   public void visitIfForm(@NotNull L3IfForm o) {
     visitPsiElement(o);
   }

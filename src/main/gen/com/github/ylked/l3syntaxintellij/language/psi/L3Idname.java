@@ -5,12 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface L3FunForm extends PsiElement {
-
-  @NotNull
-  L3Exprs getExprs();
-
-  @NotNull
-  List<L3Idname> getIdnameList();
+public interface L3Idname extends PsiElement {
 
 }

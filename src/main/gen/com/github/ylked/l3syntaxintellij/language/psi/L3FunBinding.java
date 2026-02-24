@@ -11,6 +11,6 @@ public interface L3FunBinding extends PsiElement {
   L3FunForm getFunForm();
 
   @NotNull
-  L3Identifier getIdentifier();
+  L3Idname getIdname();
 
 }

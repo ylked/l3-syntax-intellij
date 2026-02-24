@@ -26,6 +26,9 @@ public interface L3Expr extends PsiElement {
   L3Identifier getIdentifier();
 
   @Nullable
+  L3Idname getIdname();
+
+  @Nullable
   L3IfForm getIfForm();
 
   @Nullable

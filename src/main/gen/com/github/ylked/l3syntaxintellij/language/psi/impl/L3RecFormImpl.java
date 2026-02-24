@@ -41,8 +41,8 @@ public class L3RecFormImpl extends ASTWrapperPsiElement implements L3RecForm {
 
   @Override
   @NotNull
-  public L3Identifier getIdentifier() {
-    return findNotNullChildByClass(L3Identifier.class);
+  public L3Idname getIdname() {
+    return findNotNullChildByClass(L3Idname.class);
   }
 
 }

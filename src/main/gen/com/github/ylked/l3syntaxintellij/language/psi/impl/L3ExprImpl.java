@@ -65,6 +65,12 @@ public class L3ExprImpl extends ASTWrapperPsiElement implements L3Expr {
 
   @Override
   @Nullable
+  public L3Idname getIdname() {
+    return findChildByClass(L3Idname.class);
+  }
+
+  @Override
+  @Nullable
   public L3IfForm getIfForm() {
     return findChildByClass(L3IfForm.class);
   }

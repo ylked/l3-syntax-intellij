@@ -14,6 +14,6 @@ public interface L3RecForm extends PsiElement {
   L3Exprs getExprs();
 
   @NotNull
-  L3Identifier getIdentifier();
+  L3Idname getIdname();
 
 }

@@ -11,6 +11,6 @@ public interface L3DefrecForm extends PsiElement {
   L3FunForm getFunForm();
 
   @NotNull
-  L3Identifier getIdentifier();
+  L3Idname getIdname();
 
 }

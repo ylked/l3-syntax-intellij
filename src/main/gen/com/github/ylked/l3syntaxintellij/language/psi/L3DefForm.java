@@ -11,6 +11,6 @@ public interface L3DefForm extends PsiElement {
   L3Expr getExpr();
 
   @NotNull
-  L3Identifier getIdentifier();
+  L3Idname getIdname();
 
 }

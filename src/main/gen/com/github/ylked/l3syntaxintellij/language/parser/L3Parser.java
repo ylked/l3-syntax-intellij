@@ -103,14 +103,14 @@ public class L3Parser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LPAREN identifier expr RPAREN
+  // LPAREN idname expr RPAREN
   public static boolean binding(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "binding")) return false;
     if (!nextTokenIs(b, LPAREN)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, LPAREN);
-    r = r && identifier(b, l + 1);
+    r = r && idname(b, l + 1);
     r = r && expr(b, l + 1);
     r = r && consumeToken(b, RPAREN);
     exit_section_(b, m, BINDING, r);
@@ -162,14 +162,14 @@ public class L3Parser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LPAREN DEF identifier expr RPAREN
+  // LPAREN DEF idname expr RPAREN
   public static boolean def_form(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "def_form")) return false;
     if (!nextTokenIs(b, LPAREN)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, LPAREN, DEF);
-    r = r && identifier(b, l + 1);
+    r = r && idname(b, l + 1);
     r = r && expr(b, l + 1);
     r = r && consumeToken(b, RPAREN);
     exit_section_(b, m, DEF_FORM, r);
@@ -177,14 +177,14 @@ public class L3Parser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LPAREN DEFREC identifier fun_form RPAREN
+  // LPAREN DEFREC idname fun_form RPAREN
   public static boolean defrec_form(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "defrec_form")) return false;
     if (!nextTokenIs(b, LPAREN)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, LPAREN, DEFREC);
-    r = r && identifier(b, l + 1);
+    r = r && idname(b, l + 1);
     r = r && fun_form(b, l + 1);
     r = r && consumeToken(b, RPAREN);
     exit_section_(b, m, DEFREC_FORM, r);
@@ -206,6 +206,7 @@ public class L3Parser implements PsiParser, LightPsiParser {
   //       | app_form
   //       | prim_form
   //       | identifier
+  //       | idname
   //       | NUMBER
   //       | BLOCK_TAG
   //       | STRING
@@ -231,6 +232,7 @@ public class L3Parser implements PsiParser, LightPsiParser {
     if (!r) r = app_form(b, l + 1);
     if (!r) r = prim_form(b, l + 1);
     if (!r) r = identifier(b, l + 1);
+    if (!r) r = idname(b, l + 1);
     if (!r) r = consumeToken(b, NUMBER);
     if (!r) r = consumeToken(b, BLOCK_TAG);
     if (!r) r = consumeToken(b, STRING);
@@ -265,14 +267,14 @@ public class L3Parser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LPAREN identifier fun_form RPAREN
+  // LPAREN idname fun_form RPAREN
   public static boolean fun_binding(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "fun_binding")) return false;
     if (!nextTokenIs(b, LPAREN)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, LPAREN);
-    r = r && identifier(b, l + 1);
+    r = r && idname(b, l + 1);
     r = r && fun_form(b, l + 1);
     r = r && consumeToken(b, RPAREN);
     exit_section_(b, m, FUN_BINDING, r);
@@ -280,7 +282,7 @@ public class L3Parser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LPAREN FUN LPAREN identifier* RPAREN exprs RPAREN
+  // LPAREN FUN LPAREN idname* RPAREN exprs RPAREN
   public static boolean fun_form(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "fun_form")) return false;
     if (!nextTokenIs(b, LPAREN)) return false;
@@ -295,26 +297,40 @@ public class L3Parser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // identifier*
+  // idname*
   private static boolean fun_form_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "fun_form_3")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!identifier(b, l + 1)) break;
+      if (!idname(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "fun_form_3", c)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
-  // IDENT
+  // IDENT_BARE | IDENT_ARITY
   public static boolean identifier(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "identifier")) return false;
-    if (!nextTokenIs(b, IDENT)) return false;
+    if (!nextTokenIs(b, "<identifier>", IDENT_ARITY, IDENT_BARE)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, IDENT);
-    exit_section_(b, m, IDENTIFIER, r);
+    Marker m = enter_section_(b, l, _NONE_, IDENTIFIER, "<identifier>");
+    r = consumeToken(b, IDENT_BARE);
+    if (!r) r = consumeToken(b, IDENT_ARITY);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IDENT_BARE | IDENT_ARITY | PRIM_NAME
+  public static boolean idname(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "idname")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, IDNAME, "<idname>");
+    r = consumeToken(b, IDENT_BARE);
+    if (!r) r = consumeToken(b, IDENT_ARITY);
+    if (!r) r = consumeToken(b, PRIM_NAME);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -502,15 +518,22 @@ public class L3Parser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // program_prefix expr
+  // program_prefix expr?
   static boolean program(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "program")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = program_prefix(b, l + 1);
-    r = r && expr(b, l + 1);
+    r = r && program_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // expr?
+  private static boolean program_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "program_1")) return false;
+    expr(b, l + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -541,14 +564,14 @@ public class L3Parser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LPAREN REC identifier LPAREN binding* RPAREN exprs RPAREN
+  // LPAREN REC idname LPAREN binding* RPAREN exprs RPAREN
   public static boolean rec_form(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "rec_form")) return false;
     if (!nextTokenIs(b, LPAREN)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, LPAREN, REC);
-    r = r && identifier(b, l + 1);
+    r = r && idname(b, l + 1);
     r = r && consumeToken(b, LPAREN);
     r = r && rec_form_4(b, l + 1);
     r = r && consumeToken(b, RPAREN);

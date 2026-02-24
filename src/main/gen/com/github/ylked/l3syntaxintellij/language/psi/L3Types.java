@@ -21,6 +21,7 @@ public interface L3Types {
   IElementType FUN_BINDING = new L3ElementType("FUN_BINDING");
   IElementType FUN_FORM = new L3ElementType("FUN_FORM");
   IElementType IDENTIFIER = new L3ElementType("IDENTIFIER");
+  IElementType IDNAME = new L3ElementType("IDNAME");
   IElementType IF_FORM = new L3ElementType("IF_FORM");
   IElementType LETREC_FORM = new L3ElementType("LETREC_FORM");
   IElementType LET_FORM = new L3ElementType("LET_FORM");
@@ -45,7 +46,8 @@ public interface L3Types {
   IElementType DEF = new L3TokenType("def");
   IElementType DEFREC = new L3TokenType("defrec");
   IElementType FUN = new L3TokenType("fun");
-  IElementType IDENT = new L3TokenType("IDENT");
+  IElementType IDENT_ARITY = new L3TokenType("IDENT_ARITY");
+  IElementType IDENT_BARE = new L3TokenType("IDENT_BARE");
   IElementType IF = new L3TokenType("if");
   IElementType LET = new L3TokenType("let");
   IElementType LETREC = new L3TokenType("letrec");
@@ -101,6 +103,9 @@ public interface L3Types {
       }
       else if (type == IDENTIFIER) {
         return new L3IdentifierImpl(node);
+      }
+      else if (type == IDNAME) {
+        return new L3IdnameImpl(node);
       }
       else if (type == IF_FORM) {
         return new L3IfFormImpl(node);

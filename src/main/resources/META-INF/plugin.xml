@@ -1,6 +1,6 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.ylked.l3syntaxintellij</id>
+    <id>ch.ylked.l3syntax</id>
     <name>EPFL L3 Syntax Highlighter</name>
     <vendor>ylked</vendor>
 
@@ -30,5 +30,8 @@
         <lang.syntaxHighlighterFactory
                 language="L3"
                 implementationClass="com.github.ylked.l3syntaxintellij.highlighter.L3SyntaxHighlighterFactory"/>
+
+        <lang.braceMatcher language="L3"
+                           implementationClass="com.github.ylked.l3syntaxintellij.language.L3PairedBraceMatcher"/>
     </extensions>
 </idea-plugin>

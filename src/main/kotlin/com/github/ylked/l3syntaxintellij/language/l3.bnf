@@ -39,13 +39,13 @@
   ]
 }
 
-program ::= program_prefix expr
+program ::= program_prefix expr?
 
 program_prefix ::= program_prefix_item*
 program_prefix_item ::= def_form | defrec_form | expr
 
-def_form ::= LPAREN DEF identifier expr RPAREN
-defrec_form ::= LPAREN DEFREC identifier fun_form RPAREN
+def_form ::= LPAREN DEF idname expr RPAREN
+defrec_form ::= LPAREN DEFREC idname fun_form RPAREN
 
 expr ::= fun_form
       | let_form
@@ -61,6 +61,7 @@ expr ::= fun_form
       | app_form
       | prim_form
       | identifier
+      | idname
       | NUMBER
       | BLOCK_TAG
       | STRING
@@ -71,19 +72,20 @@ expr ::= fun_form
 
 exprs ::= expr+
 
-identifier ::= IDENT
+identifier ::= IDENT_BARE | IDENT_ARITY
+idname ::= IDENT_BARE | IDENT_ARITY | PRIM_NAME
 prim_name_ref ::= PRIM_NAME
 
-fun_form ::= LPAREN FUN LPAREN identifier* RPAREN exprs RPAREN
+fun_form ::= LPAREN FUN LPAREN idname* RPAREN exprs RPAREN
 
 let_form ::= LPAREN LET LPAREN binding* RPAREN exprs RPAREN
 let_star_form ::= LPAREN LETSTAR LPAREN binding* RPAREN exprs RPAREN
-binding ::= LPAREN identifier expr RPAREN
+binding ::= LPAREN idname expr RPAREN
 
 letrec_form ::= LPAREN LETREC LPAREN fun_binding* RPAREN exprs RPAREN
-fun_binding ::= LPAREN identifier fun_form RPAREN
+fun_binding ::= LPAREN idname fun_form RPAREN
 
-rec_form ::= LPAREN REC identifier LPAREN binding* RPAREN exprs RPAREN
+rec_form ::= LPAREN REC idname LPAREN binding* RPAREN exprs RPAREN
 begin_form ::= LPAREN BEGIN exprs RPAREN
 
 if_form ::= LPAREN IF expr expr expr? RPAREN

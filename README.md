@@ -1,7 +1,7 @@
 # L3 Syntax highlighter for IntelliJ
 
 <!-- Plugin description -->
-IntelliJ Syntax highlighter for the L3 language of the EPFL CS-420 course. 
+Syntax highlighter for the L3 language of the EPFL CS-420 course. 
 <!-- Plugin description end -->
 
 ## Disclaimer

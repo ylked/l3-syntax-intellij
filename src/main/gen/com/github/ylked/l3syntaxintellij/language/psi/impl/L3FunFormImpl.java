@@ -35,8 +35,8 @@ public class L3FunFormImpl extends ASTWrapperPsiElement implements L3FunForm {
 
   @Override
   @NotNull
-  public List<L3Identifier> getIdentifierList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, L3Identifier.class);
+  public List<L3Idname> getIdnameList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, L3Idname.class);
   }
 
 }

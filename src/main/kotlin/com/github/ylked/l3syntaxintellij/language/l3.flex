@@ -27,14 +27,28 @@ NUM16        = "#x"{HEX}+
 NUM10        = "-"?{DIGIT}+
 NUMBER       = ({NUM2}|{NUM16}|{NUM10})
 
-IDENTSTART   = [A-Za-z+\-*/<>=?!_:$%&\^~]
-IDENT        = {IDENTSTART}({IDENTSTART}|{DIGIT})*
+DIGIT       = [0-9]
+IDENTSTART  = [-A-Za-z+*/<>=?!_:$%&\^\~]
+IDENTBODY   = ({IDENTSTART}|{DIGIT})*
+ARITYSUFFIX = "@"{DIGIT}+
 
-BLOCK_TAG    = "#_"{IDENT}
+IDENT_BARE  = {IDENTSTART}{IDENTBODY}
+IDENT_ARITY = {IDENTSTART}{IDENTBODY}{ARITYSUFFIX}
+
+BLOCK_TAG   = "#_"({IDENT_BARE}|{IDENT_ARITY})
 
 CHAR         = \'(\\.|[^\\\'])\'
 
 STRING_LIT   = \"([^\"\\\r\n]|\\.)*\"
+
+PRIM_OP   = "<="|"<"|"+"|"-"|"*"|"/"|"%"|"="
+PRIM_WORD = "shift-left"|"shift-right"|"and"|"or"|"xor" \
+          | "id" \
+          | "block?"|"int?"|"char?"|"bool?"|"unit?" \
+          | "char->int"|"int->char" \
+          | "byte-read"|"byte-write" \
+          | "block-alloc"|"block-tag"|"block-length"|"block-get"|"block-set!"
+PRIM_NAME = ({PRIM_OP}|{PRIM_WORD})
 
 %%
 
@@ -43,7 +57,6 @@ STRING_LIT   = \"([^\"\\\r\n]|\\.)*\"
 
 "("                     { return L3Types.LPAREN; }
 ")"                     { return L3Types.RPAREN; }
-"@"                     { return L3Types.AT; }
 
 "def"                   { return L3Types.DEF; }
 "defrec"                { return L3Types.DEFREC; }
@@ -64,10 +77,13 @@ STRING_LIT   = \"([^\"\\\r\n]|\\.)*\"
 "#u"                    { return L3Types.UNIT; }
 
 {NUMBER}                { return L3Types.NUMBER; }
-{BLOCK_TAG}             { return L3Types.BLOCK_TAG; }
 {STRING_LIT}            { return L3Types.STRING; }
 {CHAR}                  { return L3Types.CHAR; }
 
-{IDENT}                 { return L3Types.IDENT; }
+{BLOCK_TAG}             { return L3Types.BLOCK_TAG; }
+{PRIM_NAME}             { return L3Types.PRIM_NAME; }
+{IDENT_ARITY}           { return L3Types.IDENT_ARITY; }
+{IDENT_BARE}            { return L3Types.IDENT_BARE; }
+"@"                     { return L3Types.AT; }
 
 .                       { return com.intellij.psi.TokenType.BAD_CHARACTER; }

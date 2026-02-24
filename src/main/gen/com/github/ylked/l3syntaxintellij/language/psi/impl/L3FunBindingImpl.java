@@ -35,8 +35,8 @@ public class L3FunBindingImpl extends ASTWrapperPsiElement implements L3FunBindi
 
   @Override
   @NotNull
-  public L3Identifier getIdentifier() {
-    return findNotNullChildByClass(L3Identifier.class);
+  public L3Idname getIdname() {
+    return findNotNullChildByClass(L3Idname.class);
   }
 
 }

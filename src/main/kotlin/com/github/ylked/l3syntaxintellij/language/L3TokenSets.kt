@@ -47,7 +47,7 @@ interface L3TokenSets {
         val AT_SIGN: TokenSet = TokenSet.create(L3Types.AT)
 
         /** Identifiers */
-        val IDENTIFIERS: TokenSet = TokenSet.create(L3Types.IDENT)
+        val IDENTIFIERS: TokenSet = TokenSet.create(L3Types.IDENT_BARE, L3Types.IDENT_ARITY)
         val PRIM_NAMES: TokenSet = TokenSet.create(L3Types.PRIM_NAME)
 
         /** If your lexer returns BAD_CHARACTER for unexpected chars */
